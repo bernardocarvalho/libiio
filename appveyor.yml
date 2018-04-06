@@ -46,7 +46,8 @@ build_script:
     # Download a 32-bit version of windres.exe
     - appveyor DownloadFile http://swdownloads.analog.com/cse/build/windres.exe.gz -FileName C:\windres.exe.gz
     - C:\msys64\usr\bin\bash -lc "cd /c ; gunzip windres.exe.gz"
-    - C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_RC_COMPILER=/c/windres.exe -DGIT_EXECUTABLE=C:/Program\ Files/Git/cmd/git.exe -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=/mingw32 -DCMAKE_C_COMPILER:FILEPATH=/mingw32/bin/i686-w64-mingw32-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=/mingw32/bin/i686-w64-mingw32-g++.exe -DCSHARP_BINDINGS:BOOL=OFF -DPKG_CONFIG_EXECUTABLE:FILEPATH=/mingw32/bin/pkg-config.exe -DENABLE_IPV6:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBSERIALPORT_LIBRARIES=/c/libs/32/libserialport.dll.a -DLIBSERIALPORT_INCLUDE_DIR=/c/include /c/projects/libiio && make -j3"
+    - del c:\msys64\mingw64\lib\liblzma.dll.a
+    - C:\msys64\usr\bin\bash -lc "cmake -G '%GENERATOR%' -DCMAKE_RC_COMPILER=/c/windres.exe -DGIT_EXECUTABLE=C:/Program\ Files/Git/cmd/git.exe -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=/mingw32 -DCMAKE_C_COMPILER:FILEPATH=/mingw32/bin/i686-w64-mingw32-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=/mingw32/bin/i686-w64-mingw32-g++.exe -DCSHARP_BINDINGS:BOOL=OFF -DPKG_CONFIG_EXECUTABLE:FILEPATH=/mingw32/bin/pkg-config.exe -DENABLE_IPV6:BOOL=OFF -DPYTHON_BINDINGS:BOOL=OFF -DLIBSERIALPORT_LIBRARIES=/c/libs/32/libserialport.dll.a -DLIBSERIALPORT_INCLUDE_DIR=/c/include -DLIBLZMA_LIBRARY=c:/msys64/mingw32/lib/liblzma.dll.a  /c/projects/libiio && make -j3"
 
     # MinGW 64 bit
     - cd c:\projects\libiio
@@ -122,8 +123,8 @@ build_script:
     - copy c:\libs\64\libserialport-0.dll c:\%ARCHIVE_NAME%\MS64
     
     #Copy dependencies for MinGW
-    - C:\msys64\usr\bin\bash -lc "cd c:/msys64/mingw32/bin ; cp -r libwinpthread-*.dll libgcc_*.dll libstdc++-*.dll libiconv-*.dll zlib*.dll libxml2-*.dll liblzma-*.dll libzip-*.dll libusb-*.dll /c/%ARCHIVE_NAME%/MinGW32"
-    - C:\msys64\usr\bin\bash -lc "cd c:/msys64/mingw64/bin ; cp -r libwinpthread-*.dll libgcc_*.dll libstdc++-*.dll libiconv-*.dll zlib*.dll libxml2-*.dll liblzma-*.dll libzip-*.dll libusb-*.dll /c/%ARCHIVE_NAME%/MinGW64"
+    - C:\msys64\usr\bin\bash -lc "cd c:/msys64/mingw32/bin ; cp -r libwinpthread-*.dll libgcc_*.dll libstdc++-*.dll libiconv-*.dll zlib*.dll libxml2-*.dll liblzma-*.dll libzip*.dll libusb-*.dll /c/%ARCHIVE_NAME%/MinGW32"
+    - C:\msys64\usr\bin\bash -lc "cd c:/msys64/mingw64/bin ; cp -r libwinpthread-*.dll libgcc_*.dll libstdc++-*.dll libiconv-*.dll zlib*.dll libxml2-*.dll liblzma-*.dll libzip*.dll libusb-*.dll /c/%ARCHIVE_NAME%/MinGW64"
     - C:\msys64\usr\bin\bash -lc "cd c:/libs/32 ; cp libserialport-*.dll /c/%ARCHIVE_NAME%/MinGW32"
     - C:\msys64\usr\bin\bash -lc "cd c:/libs/64 ; cp libserialport-*.dll /c/%ARCHIVE_NAME%/MinGW64"
     
